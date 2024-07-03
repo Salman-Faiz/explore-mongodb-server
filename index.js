@@ -35,7 +35,12 @@ async function run() {
         // send data to db
         const database = client.db("usersDB");
         const userCollection = database.collection("userCollection");
-
+        // get data
+        app.get('/users',async(req,res)=>{
+            const cursor =userCollection.find()
+            const result = await cursor.toArray();
+            res.send(result);
+        })
         // to post data 
         app.post('/users', async (req,res)=>{
 
