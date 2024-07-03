@@ -44,6 +44,15 @@ async function run() {
             res.send(result);
         })
 
+        // to get specific data by id for update
+
+        app.get(`/users/:id`,async(req,res) =>{
+            const id = req.params.id;
+            const query = {_id : new ObjectId(id)}
+            const user = await userCollection.findOne(query);
+            res.send(user);
+        })
+
 
         // to post data ***********************
         app.post('/users', async (req, res) => {
@@ -54,6 +63,14 @@ async function run() {
             const result = await userCollection.insertOne(user);
             res.send(result);
 
+        })
+
+        // put or patch for updating data
+
+        app.put('/users/:id',async(req,res)=>{
+            const id = req.params.id;
+            const userUpdate = req.body;
+            console.log(userUpdate);
         })
 
         // Delete data ************************
