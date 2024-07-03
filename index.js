@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // require express Js
 const express = require('express');
@@ -35,21 +35,35 @@ async function run() {
         // send data to db
         const database = client.db("usersDB");
         const userCollection = database.collection("userCollection");
-        // get data
-        app.get('/users',async(req,res)=>{
-            const cursor =userCollection.find()
+
+
+        // get data ********************
+        app.get('/users', async (req, res) => {
+            const cursor = userCollection.find()
             const result = await cursor.toArray();
             res.send(result);
         })
-        // to post data 
-        app.post('/users', async (req,res)=>{
+
+
+        // to post data ***********************
+        app.post('/users', async (req, res) => {
 
             const user = req.body;
-            console.log('new User',user);
+            console.log('new User', user);
             // insert one data to usersDB
             const result = await userCollection.insertOne(user);
             res.send(result);
 
+        })
+
+        // Delete data ************************
+
+        app.delete('/users/:id',async(req,res)=>{
+            const id = req.params.id;
+            console.log('please delete data from database',id);
+            const query = {_id : new ObjectId(id)};
+            const result = await userCollection.deleteOne(query);
+            res.send(result);
         })
 
 
