@@ -71,7 +71,7 @@ async function run() {
             const id = req.params.id;
             const userUpdate = req.body;
             console.log(id,userUpdate);
-            // add value to database
+            // add updated value to database
             const filter = { _id : new ObjectId(id)};
             const options = {upsert :true}
             const updatedUser = {
