@@ -70,7 +70,22 @@ async function run() {
         app.put('/users/:id',async(req,res)=>{
             const id = req.params.id;
             const userUpdate = req.body;
-            console.log(userUpdate);
+            console.log(id,userUpdate);
+            // add value to database
+            const filter = { _id : new ObjectId(id)};
+            const options = {upsert :true}
+            const updatedUser = {
+                $set : {
+                    name :userUpdate.name,
+                    email: userUpdate.email
+                }
+            }
+            const result = await userCollection.updateOne(filter,updatedUser,options)
+            res.send(result)
+
+            
+
+          
         })
 
         // Delete data ************************
@@ -100,7 +115,7 @@ async function run() {
 run().catch(console.dir);
 
 
-// define get method to get data
+// get method to get data
 
 app.get('/', (req, res) => {
     res.send('SIMPLE CRUD IS RUNNING')
